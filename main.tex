@@ -1,0 +1,437 @@
+% --------------------------------------------------------------
+% This is all preamble stuff that you don't have to worry about.
+% Head down to where it says "Start here"
+% --------------------------------------------------------------
+ 
+\documentclass[12pt]{article}
+ 
+\usepackage[margin=1in]{geometry} 
+\usepackage{amsmath,amsthm,amssymb}
+ 
+ %% to allow accents in spanish
+\usepackage[utf8x]{inputenc}
+%% to translate captions
+\usepackage[spanish,es-lcroman,es-nosectiondot,es-nodecimaldot]{babel} 
+\usepackage{titlesec}
+
+
+
+\titleformat{\subsection}
+  {\normalfont}{\thesubsection}{1em}{}
+
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+
+
+%\renewcommand\thesubsection{\alph{subsection}}
+\renewcommand\thesection{Problema \arabic{section}}
+\renewcommand{\thesubsection}{(\alph{subsection})}
+
+\begin{document}
+
+
+% --------------------------------------------------------------
+%                         Start here
+% --------------------------------------------------------------
+ 
+
+\title{Examen Final}%replace X with the appropriate number
+\author{Diego Uriarte\\ %replace with your name
+Joel Tapia} %if necessary, replace with your course title
+ 
+\maketitle
+
+\section{}
+
+\subsection{Calcular las probabilidades estacionarias $\Bar{q}$}
+
+Las probabilidades estacionarias deben ser tal que se cumpla:
+
+\begin{equation*}
+    \begin{bmatrix}
+        q_1 & q_2 & q_3
+    \end{bmatrix} \times 
+    \begin{bmatrix}
+        \phi                &   1 - \phi - \eta & \eta \\
+        1 - \phi - \eta     &  \phi             & \eta \\
+        1/2                 &  1/2              & 0
+    \end{bmatrix} =
+     \begin{bmatrix}
+        q_1 & q_2 & q_3
+    \end{bmatrix}
+\end{equation*}
+
+Operando se obtiene:
+
+\begin{align*}
+    q_1 \eta + q_2 \eta  + q_3 \cdot 0 &= q_3    \\
+                            q_1 + q_2 &= q_3 / \eta \\
+                            1 - q_3 & = q_3 / \eta \\
+                            q_3 &= \frac{\eta}{1+\eta}
+\end{align*}
+
+Además, se tiene multiplicando con la primera fila de la matriz de transición:
+
+\begin{align*}
+    q_1\phi + q_2(1-\phi-\eta) + q_3/2 &= q_1 \\
+    q_2(1-\phi-\eta) + \frac{\eta}{2(1+\eta)} &= q_1(1-\phi) \\
+    q_2(2-2\phi-\eta) + \frac{\eta}{2(1+\eta)} &= \frac{1-\phi}{1+\eta} \\
+    q_2(2-2\phi-\eta) &= \frac{2(1-\phi)-\eta}{2(1+\eta)} \\
+    q_2 &= \frac{1}{2(1+\eta)}
+\end{align*}
+
+Finalmente: $q_1 = 1 - q_2 - q_3 = \frac{1}{2(1+\eta)}$. Por tanto, el vector $\Bar{q}$ es:
+
+$$
+\Bar{q} = \begin{bmatrix}
+        \frac{1}{2(1+\eta)} & \frac{1}{2(1+\eta)} & \frac{\eta}{1+\eta}
+    \end{bmatrix}
+$$
+
+\subsection{Calcular el primer y segundo momento de $x_t$ y $E(x_t x_{t-1})$}
+
+Para el primer momento se tiene:
+
+\begin{align*}
+    E(x_t)  &= \lambda_1 q_1 + \lambda_2 q_2 + \lambda_3 q_3 \\
+            &= (1 + \mu + \delta)\frac{1}{2(1+\eta)}  + (1 + \mu - \delta)\frac{1}{2(1+\eta)} + 
+                \frac{1+\mu}{2}\frac{\eta}{1+\eta} \\
+            &= \frac{1+\mu}{1+\eta} \quad + \quad \frac{1+\mu}{2}\frac{\eta}{1+\eta}   \\
+            &= \frac{(1+\mu)(\eta + 2)}{2(1+\eta)}
+\end{align*}
+
+Para el segundo momento:
+
+\begin{align*}
+    E(x_t^2)    &= \lambda_1^2 q_1 + \lambda_2^2 q_2 + \lambda_3^2 q_3 \\
+                &= (1 + \mu + \delta)^2\frac{1}{2(1+\eta)}  + (1 + \mu - \delta)^2\frac{1}{2(1+\eta)} + 
+                \left ( \frac{1+\mu}{2} \right )^2\frac{\eta}{1+\eta} \\
+                &= (2 + 2\mu^2 +2\delta^2 + 4\mu)\frac{1}{2(1+\eta)} +   \frac{(1+\mu)^2}{4} \frac{\eta}{1+\eta} \\
+                &= \frac{4 +4\mu^2 + 4\delta^2 + 8\mu + (1+\mu)^2 \eta}{4(1+\eta)} \\
+                &= \frac{(4+\eta)(\mu+1)^2 + 4\delta^2}{4(1+\eta)}
+\end{align*}
+
+Finalmente, hallamos la primera autocorrelación de $x_t$. Para esto, partamos que en $t-1$, nos encontramos en el estado estacionario (con las probabilidades $\Bar{q}$) y que luego pasamos a los estados $\lambda_1, \lambda_2, \lambda_3$ según la matriz de probabilidades dadas. En ese caso, la autocorrelación se calcula sumando todos los posibles combinaciones de estados:
+
+\begin{align*}
+        E(x_t x_{t-1}) = \quad &q_1 \lambda_1 [\lambda_1\phi + \lambda_2(1-\phi-\eta)+\lambda_3\cdot 1/2] + \\
+                    & q_2 \lambda_2[\lambda_1 (1-\phi-\eta) + \lambda_2\phi + \lambda_3 \cdot 1/2] + \\
+                    & q_3 \lambda_3 [\eta \lambda_1 + \eta \lambda_2]
+\end{align*}
+
+Reemplazando los valores de $\lambda$ y de $\Bar{q}$ se llega a la siguiente expresión:
+
+\begin{align*}
+        E(x_t x_{t-1}) = &\frac{1}{2(1+\eta)}\left [(1+\mu+\delta)(1+\mu-\delta)(1-\eta)+2\delta\phi(1+\mu+\delta)+\frac{1+\mu}{2}\eta(1+\mu+\delta) \right ]  + \\
+                    &\frac{1}{2(1+\eta)} \left [(1+\mu-\delta)(1+\mu+\delta)(1-\eta)-2\delta\phi(1+\mu-\delta)+\frac{1+\mu}{2}\eta(1+\mu-\delta) \right ] + \\
+                    & \left ( \frac{\eta}{1+\eta}\right ) \left (\frac{1+\mu}{2}\right ) \left [ \frac{1+\mu-\delta}{2} + \frac{1+\mu+\delta}{2} \right ] \\
+                    &\\
+         E(x_t x_{t-1}) = &\frac{2(1+\mu-\delta)(1-\eta)(1+\mu+\delta)+4\delta^2\phi+(1+\mu)^2\eta+\eta(1+\mu^2)}{2(1+\eta)}     \\
+                          &\frac{(1+\mu)^2+\delta^2(2\phi+\eta-1)}{1+\eta}
+\end{align*}
+
+\subsection{Cuales son los valores muestrales de los momentos en (b) si la tasa promedio de crecimiento del consumo es 0.018, la desviación estándar 0.036 y la autocorrelación de primer orden -0.14.}
+
+El estimador del valor esperado de $x_t$ es tasa de crecimiento promedio
+
+$$
+\Bar{x_t} = 1.018 \rightarrow E(x_t)
+$$
+
+Para el segundo momento hay que hacer un pequeño cálculo pues:
+
+$$
+E(x_t^2) = Var(x_t)+E(x_t)^2
+$$
+
+Por tanto el estimado muestral es:
+
+\begin{align*}
+  \Bar{x_t^2} &= 0.036^2+1.018^2  \\
+             &= 1.03762
+\end{align*}
+
+El valor muestral para la autocorrelación de la tasa de crecimiento del consumo obtenemos el estimado muestral de $E(x_t x_{t+1})$
+
+$$
+E(x_t x_{t-1}) = \sigma^2 Cov(x_t,x_{t-1}) + E(x_t)E(x_{t-1}) 
+$$
+
+Igualmente para calcular el estimador de $E(x_t x_{t-1})$ se tiene que:
+
+\begin{align*}
+    \overline{x_t x_{t-1}} &= -0.14(0.036^2) + 1.018^2 \\
+                            &= 1.0361
+\end{align*}
+
+\subsection{Write a program that determines the values of ( $\mu,\delta,\phi $) such that the three-state Markov chain matches the sample moments in part (b)-(c) for a given arbitrary $\eta$. (This can be done in an algebraic way, but it’s easier to do it numerically. In Matlab, you can write a function that takes ( $\mu,\delta,\phi$ ) as inputs and η as additional parameter, and which returns the moments from (b)-(c) minus their sample values. Then, use a solver (e.g. fsolve, fminsearch, fminunc) to search for the zero in your function wrt ( $\mu,\delta,\phi$ ).}
+
+Este caso, en lugar de aplicar una solución numérica, notamos que para un $\eta$ dado, el sistema de ecuaciones que involucra las expresiones halladas para los momentos, en función de los parámetros del modelo se resuelve fácilmente:
+
+\begin{align*}
+    \Hat{\mu} &= 2\Bar{x_t} \left ( \frac{1+\eta}{2+\eta} \right ) - 1\\ 
+    \Hat{\delta} &= \left [ 4(1+\eta)\overline{x_t^2} - (4 + \eta)(1 + \Hat{\mu}^2)  \right ]^{1/2} \\
+    \Hat{\phi} &= \left [ (1+\eta)\overline{x_t x_{t-1}} - (1 + \Hat{\mu})^2 + (1 - \eta)\Hat{\delta}^2  \right] / 2\Hat{\delta}^2
+\end{align*}
+
+La siguiente función retorna los parámetros para un valor particular de $\eta$, así como para los tres momentos, siendo más eficiente que utilizar \texttt{fsolve}.
+
+
+\begin{verbatim}
+function [mu, delta, phi] = return_parameters( m1, m2, m3, eta)
+%return_parameters: 
+%INPUT: eta, and the three sample moments, 
+%OUTPUT: mu, delta and phi
+
+mu = m1*2*(1+eta)/(eta+2)-1;
+
+delta_square = (m2 * 4*(1+eta) - (4+eta)*(mu+1)^2)/4;
+delta = sqrt(delta_square);
+
+phi = (m3*(1+eta) - (1+mu)^2 + (1-eta)*delta^2)/(2*delta^2);
+
+end
+
+\end{verbatim}
+
+\subsection{There are now three free parameters $\eta$, $\beta$, and $\alpha$ left in the model. Write a program that takes these parameters and computes the average risk premium and risk-free rate (as in MP but for the three state system above).}
+
+Se ha escrito la función \texttt{rietz1988.m} que toma como entrada los tres estimados muestrales de los tres momentos, el valor de $\eta$, $\beta$ y $\alpha$. La salida de la función es el equity premium, la tasa libre de riesgo esperada y el retorno esperado de las stock. La función (y sus funciones anexas) se encuentran disponibles en el archivo zip adjunto).
+
+\subsection{ Perform some simulations for different values of $(\eta,\beta,\alpha)$ and report the results: average risk premium and risk-free rate. One simulation that should be done is $\eta = 0.0001$, $\alpha = 10$, and $\beta = 0.997$.}
+
+El archivo \texttt{problema1} contiene el código para replicar la siguiente tabla, en la que se prueban distintos valores de $\eta$, $\alpha$ y $\beta$.
+
+\begin{table}[!htb]                                                        
+\centering                                                           
+\begin{tabular}{|c|c|c|c|c|}                                         
+\hline                                                               
+$\eta$ & Risk Premium & $\alpha$ & $\beta$ & Risk-free return \\           
+\hline                                                               
+0.0001 & 7.34 & 10.00 & 0.997 & 2.65 \\                              
+\hline                                                               
+0.0002 & 12.05 & 10.00 & 0.920 & 2.45 \\                             
+\hline                                                               
+0.0003 & 14.98 & 9.85 & 0.890 & 0.24 \\                              
+\hline                                                               
+0.0004 & 20.97 & 10.00 & 0.800 & 1.76 \\                             
+\hline                                                               
+0.0005 & 25.22 & 10.00 & 0.750 & 1.63 \\                             
+\hline                                                               
+0.0006 & 29.51 & 10.00 & 0.700 & 2.38 \\                             
+\hline                                                               
+0.0007 & 30.26 & 9.85 & 0.700 & 0.46 \\                              
+\hline                                                               
+0.0008 & 35.56 & 9.95 & 0.650 & -0.06 \\                             
+\hline                                                               
+0.0009 & 40.62 & 10.00 & 0.600 & 1.34 \\                             
+\hline                                                               
+0.0010 & 40.64 & 9.85 & 0.600 & 1.21 \\                              
+\hline                                                               
+0.0020 & 70.42 & 9.95 & 0.400 & 0.35 \\                              
+\hline                                                               
+0.0030 & 91.16 & 9.95 & 0.300 & 2.13 \\                              
+\hline                                                               
+0.0040 & 104.11 & 9.90 & 0.250 & 2.31 \\                             
+\hline                                                               
+\end{tabular}                                                        
+\caption{Simulaciones para distintos valores de $\alpha$, $\beta$ y $\eta$}
+\label{table:table_replication}                                      
+\end{table}                             
+
+\subsection{Given your findings in (f), do you think the “crash state” formulation solves the equity premium puzzle?}
+
+Vemos de los resultados, que al añadir un estado adicional (catastrófico) se logra, bajo ciertos parámetros razonables de $\eta$ y $\alpha$, replicar los retornos del mercado financiero y de los bonos libres de riesgo. En particular, utilizando esta modificación al modelo de MP(1985), se logra una respuesta al equity premium puzzle y al risk free rate puzzle, obteniendo un equity premium elevado $(6\%)$ y una tasa libre de riesgo baja $(<1\%)$
+
+\section{}
+Definiremos las variables de nuestro problema para después empezar a desarrollar los acapite
+\begin{equation}
+    c
+\end{equation}
+
+\subsection{}
+%acá te toca, hazte una
+
+\section{}
+\subsection{ Write the indifference condition between taking the project or storing for
+an entrepreneur. This indifference condition should depend on $\omega$. So,
+denote with $\Bar{\omega}$ the entrepreneur that is indifferent. Thus, entrepreneurs
+with $\omega < \Bar{\omega}$ would take the project, while the ones with $\omega > \Bar{\omega}$ would use
+storage.}
+
+
+Siguiendo la notación utilizada en las notas de clase, se tiene lo siguiente:
+
+\begin{itemize}
+    \item Los emprendedores se distribuyen $\omega \sim [0,1]$
+    \item El emprendedor necesita $x(\omega)$ para iniciar el proyecto, siendo $x$ una función creciente en $\omega$
+    \item El retorno del proyecto $\widetilde{\kappa}$ puede ser alto o bajo: $\widetilde{\kappa} \in \{\kappa_L, \kappa_ H\}$ con probabilidades $1-\pi, \pi$. 
+    \item $\Bar{\kappa}$ es el retorno esperado del proyecto.
+    \item $r$ es el retorno de almacenar los fondos
+    \item $\overline{q_{t+1}}$ es el valor esperado del precio del capital en el período t+1.
+    \item $rx(\omega)$ es el costo de oportunidad de hacer el proyecto
+\end{itemize}
+
+Asumiendo que el emprendedor es neutral al riesgo, es decir, invierte cuando obtiene ganancias no negativas, el valor de $\Bar{\omega}$ que lo hace indiferente entre invertir y no invertir es:
+
+\[
+\overline{q_{t+1}}\Bar{\kappa} - rx(\Bar{\omega}) = 0
+\]
+
+Por tanto, los emprendedores con eficiencia $\omega \leq \Bar{\omega}$ realizan el proyecto.
+
+\subsection{ Given that $\omega$ is uniformly distributed on [0,1], write the expression for
+the fraction of entrepreneurs that invest and aggregate capital $K_{t+1}$ as a
+function of $\Bar{\omega}$.}
+
+Sea $I_t$ el número de proyectos realizados en t. Entonces, todos los emprendedores que tenían $\omega \leq \Bar{\omega}$ invirtieron en un proyecto. Como se sigue una distribución uniforme de 0 a 1, $\Bar{\omega}$ representa la fracción de emprendedores que invirtieron. Y recordamos que $\eta$ era la fracción de emprendedores en la población. Por tanto:
+
+\begin{align*}
+    I_t &= \Bar{\omega}\eta \\
+    K_{t+1} &= \Bar{\kappa} I_t \\
+    K_{t+1} &= \Bar{\kappa} \Bar{\omega}\eta
+\end{align*}
+
+\subsection{ Using the previous relation between $K_{t+1}$ and $\Bar{\omega}$ express the indifference
+condition for the entrepreneur in terms of $K_{t+1}$ and $\Bar{q}_{t+1}$. This equation
+is called the “capital supply curve”. Provide the intuition behind this
+equation: what happens when $\Bar{q}_{t+1}$ increases?}
+
+\begin{align*}
+    \Bar{q}_{t+1}= \frac{rx(\Bar{\omega})}{\Bar{\kappa}}
+\end{align*}
+
+Pero de la pregunta anterior:
+
+\[
+    \Bar{\omega} = \frac{K_{t+1}}{\Bar{\kappa} \eta} 
+\]
+
+Y reemplazando:
+
+\begin{align}
+\label{capital_supply_curve}
+    \Bar{q}_{t+1}= \frac{rx \left ( \frac{K_{t+1}}{\Bar{\kappa} \eta} \right )}{\Bar{\kappa}}
+\end{align}
+
+Sabemos que $x$ es una función creciente en su argumento, por tanto, un mayor $\Bar{q}_{t+1}$ genera un mayor valor de $x$, que implica que emprendedores del tipo menos eficiente (mayor $\omega$) pueden invertir. Esto se traduce en que mayor fracción de los ahorros va hacia capital de inversión en lugar de ser almacenado.
+
+\subsection{ Write the FOCs of the competitive firm that produces output goods using
+capital and labor. This should give you a relation for wages and price of
+capital w t ,q t with the stock of capital K t and labor L. Take expectations
+over the TFP shock to the price of capital equation. This equation is called
+“capital demand curve”. Provide the intuition behind this equation: what
+happens when ¯ q t+1 increases?}
+
+El problema de maximización de la firma para t+1 es:
+
+\[
+    \max_{K_{t}, L} \theta F(K_{t}, L) - w_{t}L_{t} - q_{t}K_{t}
+\]
+
+Por tanto, derivando obtenemos las FOC:
+
+\begin{align*}
+    w_{t} &= \theta F_L(K_{t}, L) \\
+    q_t &=  \theta F_K(K_{t}, L)
+\end{align*}
+
+En el caso del capital para el siguiente período, si tomamos esperanza a lo largo del TFP, se obtiene lo siguiente:
+
+\begin{equation}
+\label{capital_demand_curve}
+        \Bar{q}_{t+1} = \Bar{\theta} F_K(K_{t+1}, L)
+\end{equation}
+
+donde $\Bar{q}_{t+1}$ es el valor esperado del bien capital en el periodo t+1. La ecuación indica que si se incrementa el valor esperado del capital, entonces $K_{t+1}$ debe ser menor (ya que $F_K$ es una función decreciente). Es decir, cuando hay poco capital en la economía siendo invertido, el valor del capital de ese capital se incrementa.
+
+\subsection{ The intersection between the capital supply curve and the capital demand
+curve determines the equilibrium capital $K_{t+1}$ . If you assume $\theta$ is i.i.d.,
+would capital be autocorrelated in this economy?}
+
+De las ecuaciones \eqref{capital_supply_curve} y \eqref{capital_demand_curve} se determina el capital y el precio de capital del período t+1. Como en estas ecuaciones no aparece ninguna variable determinada en t, estas dos ecuaciones se repiten a lo largo del tiempo, por lo que $q$ y $K$ son constantes. Por tanto, el capital estará autocorrelacionado solo en el sentido que será el mismo (constante). Por otra parte, la producción no estará correlacionada (debido al shock $\theta$ que es iid a lo largo del tiempo). Sin embargo, el consumo estará autocorrelacionado ya que en períodos de alta productiva se consume más y se almacena más, que puede ser consumido en los siguientes períodos.
+
+\noindent\makebox[\linewidth]{\rule{\paperwidth}{0.4pt}}
+
+\subsection{Write the optimal contract between a type-$\omega$ entrepreneur and a lender.}
+Partamos de la situación de equilibrio parcial en la que un emprendedor del tipo $\omega$ ha decidido invertir pero sus fondos $s_E$ no son suficientes. El contrato con el lender indica que se realizará la verificación con probabilidad $p$ solo si el emprendedor declara el mal estado. Sea $c_i$ el consumo cuando anuncia el estado $i$ y no es auditado, y $c^a$ cuando anuncia el estado malo y es auditado. El contrato óptimo implica hallar ${p, c_1, c_2, c^a}$ de manera que el emprendedor maximice su consumo, es decir, sujeto a que el lender reciba su costo de oportunidad. El problema es el siguiente:
+
+\begin{equation}
+    \max (1-\pi)(p c^a + (1-p)c_1) + \pi c_2
+\end{equation}
+
+sujeto a
+
+\begin{equation}
+\label{expected_payoff_lender}
+    (1- \pi)[\Bar{q}\kappa_1 - p(c^a + \Bar{q}\gamma) - (1-p)c_1] + \pi[\Bar{q}\kappa_2-c_2] \geq r(x-s_E)
+\end{equation}
+
+\begin{equation}
+\label{truth_telling_constraint}
+    c_2 \geq (1-p)(\Bar{q}(\kappa_2 - \kappa_1) + c_1)
+\end{equation}
+
+\begin{equation}
+\label{limited_liability_1}
+    c_1 \geq 0
+\end{equation}
+
+\begin{equation}
+\label{limited_liability_2}
+    0 \geq p \geq 1    
+\end{equation}
+
+La restricción \eqref{expected_payoff_lender} siempre se cumple con igualdad e indica que siempre se paga el costo de oportunidad del lender. La restricción \eqref{truth_telling_constraint} se cumple con igualdad cuando $p>0$. Por último, las ecuaciones cumplen con igualdad cuando el emprendedor no tiene los suficientes fondos para cubrir el proyecto. Las ecuaciones \eqref{limited_liability_1} y \eqref{limited_liability_2} se cumplen con igualdad cuando los fondos del emprendedor $s_E$ no son suficientes y cae en el riesgo de no pagar la deuda si es que toca el estado malo. Esto ocurre porque lo óptimo es concentrar el pago en el estado bueno $\kappa_2$, es decir, minimizando el incentivo a mentir.
+
+Resolviendo para hallar $p$:
+
+\begin{align*}
+        (1- \pi)[\Bar{q}\kappa_1 - p(\Bar{q}\gamma)] + \pi[\Bar{q}\kappa_2-c_2] &= r(x-s_E) \\
+        (1- \pi)[\Bar{q}\kappa_1 - p(\Bar{q}\gamma)] + \pi[\Bar{q}\kappa_2-(1-p)\Bar{q}(\kappa_2 - \kappa_1)] &= r(x-s_E) \\
+        p[-(1-\pi)\Bar{q}\gamma + \pi\Bar{q}(\kappa_2 - \kappa_1)] + (1-\pi)\Bar{q}\kappa_1 + \pi\Bar{q}\kappa_2 - \pi\Bar{q}(\kappa_2-\kappa_1) &= r(x-s_E) \\
+        p[\pi\Bar{q}(\kappa_2 - \kappa_1)-(1-\pi)\Bar{q}\gamma] + \Bar{q}\kappa_1 &= r(x-s_E)
+\end{align*}
+
+\[
+    p = \frac{r(x(\omega)-s_E)-\Bar{q}\kappa_1}{\pi\Bar{q}(\kappa_2 - \kappa_1)-(1-\pi)\Bar{q}\gamma}
+\]
+
+donde p es la probabilidad óptima de verificación del contrato, cuando el emprendedor reporta estado bajo ($\kappa_1$), y es tal que el emprendedor no quiere mentir.
+
+\subsection{Now, write the indifference condition for an entrepreneur $\omega$ with savings
+$s_E$. Denote with $\Tilde{\omega}$ the entrepreneur that is indifferent. Is $\Tilde{\omega}$ greater or
+lower than $\Bar{\omega}$? Notice that $\Tilde{\omega}$ depends on $s_E$.}
+
+Primero, planteamos la situación donde el emprendedor tiene suficientes ahorros, de manera que puede pagar a los lenders incluso en el peor estado, en ese caso:
+
+\[
+\Bar{q}\kappa_1 \geq r(x(\omega)-s_E)
+\]
+
+De estar manera podemos definir el nivel de ahorro para estar cubierto por completo con ahorros (es decir, que no estas expuesto a costos de auditoría). En ese caso:
+
+\[
+S^*(\omega) = x(\omega)-(\Bar{q}/r)\kappa_1
+\]
+
+El emprendedor pondrá todos sus ahorros en el proyecto hasta el punto que su contribución iguale $S^*(\omega)$, por tanto:
+
+\begin{align*}
+    s_E &= S^*(\omega)  \\
+    s_E &= x(\Tilde{\omega}) - (\Bar{q}/r)\kappa_1 \\
+    x(\Tilde{\omega})  &= s_E + (\Bar{q}/r)\kappa_1
+\end{align*}
+
+Si los ahorros $s_E$ son los pequeños, entonces se tiene que $x(\Tilde{\omega}) < x(\Bar{\omega})$, de donde $\Tilde{\omega} < \Bar{\omega}$. Es decir, al haber asimetría de información, y tener costos de monitoreo, solo los emprendedores más eficientes invertirán.
+
+\subsection{Using the fact that all entrepreneurs earn the same wage and so have the same earnings and that $\omega$ is uniformly distributed, write the expression of the aggregate capital $K_{t+1}$ as a function of $\Tilde{\omega}$. Note that here you should consider the losses from the verification costs.}
+
+Ahora, establezcamos la probabilidad que un emprendedor sea verificado cuando reporta un estado malo:
+
+\[
+    p(\omega) = \max \left ( \frac{rx(\omega) - \Bar{q}\kappa_1 - r s_E}{\Bar{q}(\pi(\kappa_2 - \kappa_1) - (1-\pi)\gamma)} , 0 \right )
+\]
+
+
+\end{document}
